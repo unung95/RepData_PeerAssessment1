@@ -1,0 +1,50 @@
+---
+title: "Reproducible Research: Peer Assessment 1"
+output: 
+  html_document:
+    keep_md: true
+---
+
+## Loading and preprocessing the data
+  
+```{r}
+read.csv("activity.csv") -> mydata
+head(mydata)
+tail(mydata)
+```
+  
+## What is mean total number of steps taken per day?
+Calculate the total number of steps taken per day
+```{r}
+aggregate(mydata$steps,by=list(mydata$date),function(x) mean(x,na.rm=TRUE)) -> dtx
+```
+Make a histogram of the total number of steps taken each day
+```{r, echo =TRUE}
+hist(dtx$x,main="Histogram of the total number of steps taken each day",xlab="Mean")
+```
+
+
+
+Calculate and report the mean and median of the total number of steps taken per day
+```{r}
+aggregate(mydata$steps,by=list(mydata$date),function(x) median(x,na.rm=TRUE)) -> dtx2
+data.frame(meanx = mean(dtx$x,na.rm=TRUE),medianx = median(dtx$x,na.rm=TRUE))
+```
+
+## What is the average daily activity pattern?
+Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
+```{r, echo =TRUE}
+plot.ts(dtx$x,type="l")
+```
+
+
+## Imputing missing values
+Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)
+```{r}
+mydata$steps -> st1
+length(st1[is.na(st1)])
+```
+
+
+## Are there differences in activity patterns between weekdays and weekends?
+
